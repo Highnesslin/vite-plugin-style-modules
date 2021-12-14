@@ -2,10 +2,10 @@ import { IPluginOptions, IPostCssModule } from './type';
 import { dataToEsm } from '@rollup/pluginutils';
 
 // css匹配规则
-const cssModuleLangs = /\.(css|less|scss|stylus)/;
+const cssModuleLangs = /\.(css|less|scss|stylus|styl)/;
 
 // 模块化css匹配规则
-let cssModuleRE = /\.(css|less|scss|stylus)/,
+let cssModuleRE = /\.(css|less|scss|stylus|styl)/,
   // css模块化后的json结构
   cssModuleJSON: undefined | string,
   // css模块化参数

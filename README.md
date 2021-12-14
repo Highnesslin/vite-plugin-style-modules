@@ -72,9 +72,9 @@ ReactDOM.render(
 
 | Name                              | Type                                                            | Description                                     | 默认                            |
 | --------------------------------- | --------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
-| path                              | RegExp                                                          | 需要模块化处理的文件名正则表达式，比如`/\.css/` | `/\.(css\|less\|scss\|stylus)/` |
+| path                              | RegExp                                                          | 需要模块化处理的文件名正则表达式，比如`/\.css/` | `/\.(css\|less\|scss\|stylus|styl)/` |
 | **postcss-modules**接收的参数 | [postcss-modules](https://github.com/madyankin/postcss-modules) | 参数将直接透传到 **postcss-modules**            | `undefined`                            |
 
-### 特性
+### 预处理语言
 
-内置`css`、`less`、`sass`、`stylus`，不需要额外安装
+默认内部安装了`less`、`sass`、`stylus`，不需要再额外安装
