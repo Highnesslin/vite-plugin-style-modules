@@ -13,7 +13,6 @@ npm install vite-plugin-style-modules
 ```javascript
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-
 import viteCssModule from 'vite-plugin-style-modules';
 // 支持ESM和CommonJS两种方式引入
 // const viteCssModule = require('vite-plugin-style-modules')
@@ -70,10 +69,10 @@ ReactDOM.render(
 
 `vite-plugin-style-modules`允许接受一个对象作为参数，详情如下：
 
-| Name                          | Type                                                            | Description                                     | 默认                         |
-| ----------------------------- | --------------------------------------------------------------- | ----------------------------------------------- | ---------------------------- | ------- |
-| path                          | RegExp                                                          | 需要模块化处理的文件名正则表达式，比如`/\.css/` | `/\.(css\|less\|scss\|stylus | styl)/` |
-| **postcss-modules**接收的参数 | [postcss-modules](https://github.com/madyankin/postcss-modules) | 参数将直接透传到 **postcss-modules**            | `undefined`                  |
+| Name                          | Type                                                            | Description                                     | 默认                                  |
+| ----------------------------- | --------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------- |
+| path                          | RegExp                                                          | 需要模块化处理的文件名正则表达式，比如`/\.css/` | `/\.(css\|less\|scss\|stylus\|styl)/` |
+| **postcss-modules**接收的参数 | [postcss-modules](https://github.com/madyankin/postcss-modules) | 参数将直接透传到 **postcss-modules**            | `undefined`                           |
 
 ### 其他
 
