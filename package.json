@@ -17,7 +17,7 @@
     "sass",
     "stylus",
     "css modules",
-    "react css modules"
+    "react-css-modules"
   ],
   "repository": {
     "type": "git",
@@ -28,15 +28,16 @@
   "bugs": {
     "url": "https://github.com/Highnesslin/vite-plugin-style-modules/issues"
   },
-  "homepage": "https://github.com/Highnesslin/vite-plugin-style-modules#readme",
+  "homepage": "https://github.com/Highnesslin/vite-plugin-style-modules",
   "dependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/pluginutils": "^4.1.2",
+    "postcss": "^8.4.5",
+    "postcss-import": "^14.0.2",
+    "postcss-modules": "^4.2.2",
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-typescript2": "^0.31.1",
-    "postcss": "^8.4.5",
-    "postcss-modules": "^4.2.2",
     "less": "^4.1.2",
     "sass": "^1.45.0",
     "stylus": "^0.55.0"

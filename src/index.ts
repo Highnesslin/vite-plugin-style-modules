@@ -28,17 +28,36 @@ async function compileCSS(id: string, code: string) {
     }),
   ];
 
+  /**
+   * 支持@import url
+   * 先用 postcss 解析 @import url 语法，然后再丢给 预处理语言 ，否则会报错
+   * 下面还会用一次postcss，感觉可以优化
+   * TODO 1: 写个postcss插件将预处理语言转成css，只需要调用一次postcss即可
+   * TODO 2：在预处理语言那一步支持@import url
+   */
+  let nextCode = await require('postcss')
+    .default([require('postcss-import')])
+    .process(code, {
+      to: id,
+      from: id,
+      map: {
+        inline: false,
+        annotation: false,
+      },
+    })
+    .then(res => res.css);
+
   // 根据文件名获取对应的css编译器，这里本身的错误提示就很完美了，不需要人工catch
   const cssCompiler = (id.match(cssModuleLangs) as string[])[1];
 
-  const nextCode =
+  nextCode =
     cssCompiler !== 'css'
       ? await require(cssCompiler)
-          .render(code)
+          .render(nextCode)
           .then(res => res.css)
-      : code;
+      : nextCode;
 
-  const postcssResult = await require('postcss')
+  nextCode = await require('postcss')
     .default(postcssPlugins)
     .process(nextCode, {
       to: id,
@@ -47,11 +66,12 @@ async function compileCSS(id: string, code: string) {
         inline: false,
         annotation: false,
       },
-    });
+    })
+    .then(res => res.css);
 
   return {
     moduleJson,
-    code: postcssResult.css,
+    code: nextCode,
   };
 }
 

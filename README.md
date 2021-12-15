@@ -70,11 +70,15 @@ ReactDOM.render(
 
 `vite-plugin-style-modules`允许接受一个对象作为参数，详情如下：
 
-| Name                              | Type                                                            | Description                                     | 默认                            |
-| --------------------------------- | --------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
-| path                              | RegExp                                                          | 需要模块化处理的文件名正则表达式，比如`/\.css/` | `/\.(css\|less\|scss\|stylus|styl)/` |
-| **postcss-modules**接收的参数 | [postcss-modules](https://github.com/madyankin/postcss-modules) | 参数将直接透传到 **postcss-modules**            | `undefined`                            |
+| Name                          | Type                                                            | Description                                     | 默认                         |
+| ----------------------------- | --------------------------------------------------------------- | ----------------------------------------------- | ---------------------------- | ------- |
+| path                          | RegExp                                                          | 需要模块化处理的文件名正则表达式，比如`/\.css/` | `/\.(css\|less\|scss\|stylus | styl)/` |
+| **postcss-modules**接收的参数 | [postcss-modules](https://github.com/madyankin/postcss-modules) | 参数将直接透传到 **postcss-modules**            | `undefined`                  |
 
-### 预处理语言
+### 其他
+
+#### 1、预处理语言
 
 默认内部安装了`less`、`sass`、`stylus`，不需要再额外安装
+
+#### 2、支持`@import url`
