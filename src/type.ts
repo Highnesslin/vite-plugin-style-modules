@@ -53,5 +53,5 @@ export interface IPostCssModule {
 }
 
 export interface IPluginOptions extends IPostCssModule {
-  path: RegExp
+  path?: RegExp
 }

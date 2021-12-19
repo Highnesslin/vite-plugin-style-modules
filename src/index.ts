@@ -2,21 +2,23 @@ import { IPluginOptions, IPostCssModule } from './type';
 import { dataToEsm } from '@rollup/pluginutils';
 
 // css匹配规则
-const cssModuleLangs = /\.(css|less|scss|stylus|styl)/;
+const cssLangs = /\.(css|less|scss|stylus|styl)/;
 
 // 模块化css匹配规则
-let cssModuleRE = /\.(css|less|scss|stylus|styl)/,
+let cssModuleLangs = /\.(css|less|scss|stylus|styl)/,
   // css模块化后的json结构
   cssModuleJSON: undefined | string,
   // css模块化参数
   modulesOptions: IPostCssModule = {
     scopeBehaviour: 'local',
-    localsConvention: 'camelCaseOnly',
-  };
+    localsConvention: 'camelCase',
+  },
+  postcssPlugins = [require('postcss-import')(), require('precss')()];
 
 async function compileCSS(id: string, code: string) {
   let moduleJson;
-  const postcssPlugins = [
+  const _postcssPlugins = [
+    ...postcssPlugins,
     require('postcss-modules')({
       ...modulesOptions,
       getJSON(cssFileName: string, module: { [name: string]: string }, outputFileName: string) {
@@ -28,38 +30,14 @@ async function compileCSS(id: string, code: string) {
     }),
   ];
 
-  /**
-   * 支持@import url
-   * 先用 postcss 解析 @import url 语法，然后再丢给 预处理语言 ，否则会报错
-   * 下面还会用一次postcss，感觉可以优化
-   * TODO 1: 写个postcss插件将预处理语言转成css，只需要调用一次postcss即可
-   * TODO 2：在预处理语言那一步支持@import url
-   */
-  let nextCode = await require('postcss')
-    .default([require('postcss-import')])
-    .process(code, {
-      to: id,
-      from: id,
-      map: {
-        inline: false,
-        annotation: false,
-      },
-    })
-    .then(res => res.css);
-
   // 根据文件名获取对应的css编译器，这里本身的错误提示就很完美了，不需要人工catch
-  const cssCompiler = (id.match(cssModuleLangs) as string[])[1];
+  const lang = (id.match(cssLangs) as string[])[1];
+  const parser = lang !== 'css' ? require(`postcss-${lang}`) : undefined;
 
-  nextCode =
-    cssCompiler !== 'css'
-      ? await require(cssCompiler)
-          .render(nextCode)
-          .then(res => res.css)
-      : nextCode;
-
-  nextCode = await require('postcss')
-    .default(postcssPlugins)
-    .process(nextCode, {
+  let nextCode = await require('postcss')
+    .default(_postcssPlugins)
+    .process(code, {
+      parser,
       to: id,
       from: id,
       map: {
@@ -79,8 +57,25 @@ const pluginPre = () => {
   return {
     enforce: 'pre',
     name: 'vite-plugin-transform-css-modules-pre',
+    configResolved(_config) {
+      if (!_config || !_config.css) return;
+
+      if (_config.css.modules) {
+        const { modules } = _config.css;
+        modulesOptions = Object.assign({}, modulesOptions, modules);
+      }
+
+      if (_config.css.postcss && _config.css.postcss.plugins) {
+        const { plugins } = _config.css.postcss;
+        if (Array.isArray(plugins)) {
+          postcssPlugins.push(...(plugins as Array<never>));
+        } else {
+          console.error('配置项 [css.postcss] 必须是数组类型');
+        }
+      }
+    },
     async transform(raw: string, id: string) {
-      if (cssModuleRE.test(id) && !id.includes('node_modules')) {
+      if (cssModuleLangs.test(id) && !id.includes('node_modules')) {
         const { code, moduleJson } = await compileCSS(id, raw);
 
         // 导出模块化后的字符串给后置的插件使用
@@ -101,7 +96,7 @@ const pluginPost = () => {
     enforce: 'post',
     name: 'vite-plugin-transform-css-modules-post',
     async transform(css: string, id: string) {
-      if (cssModuleRE.test(id) && !id.includes('node_modules')) {
+      if (cssModuleLangs.test(id) && !id.includes('node_modules')) {
         let startStr = 'const css = ';
         const cssCodeStartIndex = css.indexOf(startStr);
         const cssCodeEndIndex = css.indexOf('updateStyle(id, css)');
@@ -129,7 +124,7 @@ const vitePluginCssModule = (options?: IPluginOptions) => {
   const { path, ...rest } = options || {};
 
   if (path) {
-    cssModuleRE = path;
+    cssModuleLangs = path;
   }
 
   if (rest) {

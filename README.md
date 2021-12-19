@@ -78,6 +78,6 @@ ReactDOM.render(
 
 #### 1、预处理语言
 
-默认内部安装了`less`、`sass`、`stylus`，不需要再额外安装
+支持`less`、`sass`、`stylus`
 
 #### 2、支持`@import url`
