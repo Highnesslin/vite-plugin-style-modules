@@ -81,3 +81,7 @@ ReactDOM.render(
 支持`less`、`sass`、`stylus`
 
 #### 2、支持`@import url`
+
+#### 3、Of course, 支持热更新
+
+一个合格的 vite 插件应该都会具有哈

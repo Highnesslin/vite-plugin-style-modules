@@ -13,7 +13,9 @@ let cssModuleLangs = /\.(css|less|scss|stylus|styl)/,
     scopeBehaviour: 'local',
     localsConvention: 'camelCase',
   },
-  postcssPlugins = [require('postcss-import')(), require('precss')()];
+  postcssPlugins = [
+    require('postcss-nested')(),
+  ];
 
 async function compileCSS(id: string, code: string) {
   let moduleJson;
@@ -34,7 +36,7 @@ async function compileCSS(id: string, code: string) {
   const lang = (id.match(cssLangs) as string[])[1];
   const parser = lang !== 'css' ? require(`postcss-${lang}`) : undefined;
 
-  let nextCode = await require('postcss')
+  const nextCode = await require('postcss')
     .default(_postcssPlugins)
     .process(code, {
       parser,
@@ -109,7 +111,9 @@ const pluginPost = () => {
           `const id = ${JSON.stringify(id)}`,
           `const css = ${cssStr}`,
           `updateStyle(id, css)`,
-          `${cssModuleJSON || `import.meta.hot.accept()\nexport default css`}`,
+          cssModuleJSON
+            ? `${cssModuleJSON}` + `import.meta.hot.accept('${str}')`
+            : 'import.meta.hot.accept()' + 'export default css',
           `import.meta.hot.prune(() => removeStyle(id))`,
         ].join('\n');
       }

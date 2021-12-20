@@ -1,12 +1,13 @@
 {
   "name": "vite-plugin-style-modules",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "⭐️⭐️⭐️ Support CSS Modules, not only in xx.module.xx, but also in the custom named file. like xx.(css|less|sass|stylus)",
   "main": "dist/bundle.js",
   "module": "dist/bundle-esm.js",
   "types": "dist/type.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:core": "node test/index.js",
     "build": "yarn run rollup -c"
   },
   "keywords": [
@@ -23,7 +24,7 @@
     "type": "git",
     "url": "git@github.com:Highnesslin/vite-plugin-style-modules.git"
   },
-  "author": "",
+  "author": "Lin<2212477518@qq.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Highnesslin/vite-plugin-style-modules/issues"
@@ -34,12 +35,11 @@
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/pluginutils": "^4.1.2",
     "postcss": "^8.4.5",
-    "postcss-import": "^14.0.2",
     "postcss-modules": "^4.2.2",
+    "postcss-nested": "^5.0.6",
     "postcss-less": "^5.0.0",
     "postcss-scss": "^4.0.2",
     "postcss-stylus": "^0.0.1",
-    "precss": "^4.0.0",
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-typescript2": "^0.31.1"
   },
