@@ -1,5 +1,9 @@
 # vite-plugin-style-modules
 
+## 版本
+
+Vite2.7.4 及以上
+
 ## 安装
 
 ```javascript

@@ -99,22 +99,26 @@ const pluginPost = () => {
     name: 'vite-plugin-transform-css-modules-post',
     async transform(css: string, id: string) {
       if (cssModuleLangs.test(id) && !id.includes('node_modules')) {
-        let startStr = 'const css = ';
+        // TODO: 暂时用的是文字截取方案，但每个Vite版本的变量不一致，有得包含__vite__前缀有的没有，
+        const startStr = 'const __vite__css = '; // 'const css = '
+        const startEnd = '__vite__updateStyle(__vite__id, __vite__css)'; // 'updateStyle(id, css)'
+
         const cssCodeStartIndex = css.indexOf(startStr);
-        const cssCodeEndIndex = css.indexOf('updateStyle(id, css)');
+        const cssCodeEndIndex = css.indexOf(startEnd);
+
         const cssStr = css.slice(cssCodeStartIndex + startStr.length, cssCodeEndIndex);
         const pathIdx = id.indexOf('/src/');
         const str = id.slice(pathIdx, id.length);
         return [
-          `import.meta.hot = __vite__createHotContext('${str}');`,
-          `import { updateStyle, removeStyle } from "/@vite/client"`,
-          `const id = ${JSON.stringify(id)}`,
-          `const css = ${cssStr}`,
-          `updateStyle(id, css)`,
-          cssModuleJSON
-            ? `${cssModuleJSON}` + `import.meta.hot.accept('${str}')`
-            : 'import.meta.hot.accept()' + 'export default css',
-          `import.meta.hot.prune(() => removeStyle(id))`,
+            `import.meta.hot = __vite__createHotContext('${str}');`,
+            `import { updateStyle as __vite__updateStyle, removeStyle } from "/@vite/client"`,
+            `const __vite__id = ${JSON.stringify(id)}`,
+            `const __vite__css = ${cssStr}`,
+            `__vite__updateStyle(__vite__id, __vite__css)`,
+            cssModuleJSON
+                ? `${cssModuleJSON}` + `import.meta.hot.accept('${str}')`
+                : 'import.meta.hot.accept()' + 'export default __vite__css',
+            `import.meta.hot.prune(() => removeStyle(__vite__id))`,
         ].join('\n');
       }
     },

@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-style-modules",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "⭐️⭐️⭐️ Support CSS Modules, not only in xx.module.xx, but also in the custom named file. like xx.(css|less|sass|stylus)",
   "main": "dist/bundle.js",
   "module": "dist/bundle-esm.js",
