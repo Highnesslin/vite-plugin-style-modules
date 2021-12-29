@@ -82,7 +82,7 @@ ReactDOM.render(
 
 #### 1、预处理语言
 
-支持`less`、`sass`、`stylus`
+支持`less`、`sass`、`stylus`，使用前需要安装对应的**postcss插件**，比如`postcss-less`
 
 #### 2、支持`@import url`
 
