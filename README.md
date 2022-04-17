@@ -82,10 +82,14 @@ ReactDOM.render(
 
 #### 1、预处理语言
 
-支持`less`、`sass`、`stylus`，使用前需要安装对应的**postcss插件**，比如`postcss-less`
+支持`less`、`sass`、`stylus`，使用前需要安装对应的**postcss 插件**，比如`postcss-less`
 
 #### 2、支持`@import url`
 
 #### 3、Of course, 支持热更新
 
 一个合格的 vite 插件应该都会具有哈
+
+### 待完成
+
+生产环境打包
