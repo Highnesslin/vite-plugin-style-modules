@@ -1,5 +1,5 @@
-import { IPluginOptions, IPostCssModule } from './type';
 import { dataToEsm } from '@rollup/pluginutils';
+import { IPluginOptions, IPostCssModule } from './type';
 
 // css匹配规则
 const cssLangs = /\.(css|less|scss|stylus|styl)/;
